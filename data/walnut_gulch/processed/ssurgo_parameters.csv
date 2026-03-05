@@ -1,0 +1,27 @@
+MUSYM,Map_Unit_Name,Field_Soil_Type,Clay_%,Sand_%,Silt_%,Texture_Class,Ks_m/s,Psi_m,Theta_Sat,Theta_Init
+101,"Mabray-Chiricahua-Rock outcrop complex, 3 to ",Mab-Chir-RO,11.3,65.3,19.4,Sandy Loam,7.19e-06,0.11,0.453,0.15
+102,"Mabray-Rock outcrop complex, 3 to 45 percent ",Mab-RO,9.2,63.2,24.8,Sandy Loam,7.19e-06,0.11,0.453,0.15
+108,"McAllister-Stronghold complex, 3 to 20 percen",MacAll-Strong,10.0,74.4,13.6,Loamy Sand,1.7e-05,0.061,0.437,0.15
+118,"Pedregosa very gravelly fine sandy loam, 0 to",Epitaph,9.5,64.8,21.0,Sandy Loam,7.19e-06,0.11,0.453,0.15
+122,Pits-Dumps complex,Elgin-Strong,9.0,75.1,12.2,Loamy Sand,1.7e-05,0.061,0.437,0.15
+125,"Riveroad and Ubik soils, 0 to 5 percent slope",River-Bod,7.4,89.0,5.4,Sand,5.83e-05,0.049,0.437,0.15
+127,"Riverwash-Bodecker complex, 0 to 3 percent sl",River-Bodeck,4.6,84.7,9.3,Loamy Sand,1.7e-05,0.061,0.437,0.15
+132,"Schiefflin very stony loamy sand, 3 to 15 per",Schiefflin,6.4,83.3,9.1,Loamy Sand,1.7e-05,0.061,0.437,0.15
+134,"Stronghold-Bernardino complex, 10 to 30 perce",Strong-Bern,10.3,74.3,11.5,Loamy Sand,1.7e-05,0.061,0.437,0.15
+136,"Sutherland-Mule complex, 3 to 15 percent slop",Suth-Mule,7.8,78.2,11.7,Loamy Sand,1.7e-05,0.061,0.437,0.15
+141,"Terrarossa-Blacktail-Pyeatt complex, 1 to 40 ",Blacktail,18.4,62.8,13.7,Sandy Loam,7.19e-06,0.11,0.453,0.15
+142,"Tombstone very gravelly fine sandy loam, 8 to",Tombstone,8.6,74.5,14.0,Loamy Sand,1.7e-05,0.061,0.437,0.15
+18,"Brunkcow-Chiricahua-Andrada complex, 3 to 20 ",Mab-Chi-RO,12.3,58.9,23.4,Sandy Loam,7.19e-06,0.11,0.453,0.15
+19,"Brunkcow-Chiricahua-Lampshire complex, 15 to ",Lamp-RO,15.7,68.6,12.1,Sandy Loam,7.19e-06,0.11,0.453,0.15
+20,"Budlamp-Woodcutter complex, 15 to 60 percent ",Bud-Wood,5.3,81.1,10.9,Loamy Sand,1.7e-05,0.061,0.437,0.15
+32,"Combate loamy sand, 0 to 5 percent slopes",Combate,6.6,76.3,14.3,Loamy Sand,1.7e-05,0.061,0.437,0.15
+44,Denied access,Elgin-Strong,9.0,75.1,12.2,Loamy Sand,1.7e-05,0.061,0.437,0.15
+5,"Baboquivari-Combate complex, 0 to 3 percent s",Babo-Comb,6.1,80.1,11.0,Loamy Sand,1.7e-05,0.061,0.437,0.15
+58,"Elgin-Stronghold complex, 3 to 20 percent slo",Elgin-Strong,9.0,75.1,12.2,Loamy Sand,1.7e-05,0.061,0.437,0.15
+61,"Epitaph very cobbly clay loam, 3 to 15 percen",Epitaph,9.5,64.8,21.0,Sandy Loam,7.19e-06,0.11,0.453,0.15
+70,"Forrest-Bonita complex, 0 to 3 percent slopes",Forr-Bon,11.7,57.6,26.7,Sandy Loam,7.19e-06,0.11,0.453,0.15
+75,"Graham-Lampshire complex, 8 to 60 percent slo",Graham-Lamp,11.8,43.7,34.9,Loam,3.67e-06,0.089,0.463,0.15
+77,"Grizzle coarse sandy loam, 3 to 8 percent slo",Grizzle,7.0,71.8,18.1,Loamy Sand,1.7e-05,0.061,0.437,0.15
+8,"Blakeney-Luckyhills complex, 3 to 15 percent ",Luckyhills,10.5,73.8,13.7,Loamy Sand,1.7e-05,0.061,0.437,0.15
+90,"Kahn complex, 0 to 3 percent slopes",Graham,12.7,47.3,32.3,Loam,3.67e-06,0.089,0.463,0.15
+99,"Luckyhills-McNeal complex, 3 to 15 percent sl",Lucky-McNeal,8.3,70.3,18.3,Loamy Sand,1.7e-05,0.061,0.437,0.15

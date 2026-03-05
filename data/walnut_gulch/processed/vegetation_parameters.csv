@@ -1,0 +1,25 @@
+Cover_Type,Manning_n,Area_km2,Description
+Built-up or disturbed,0.015,4.72,Non-rangeland
+Open or built-up area,0.015,7.18,non-vegetated open or built-up areas -- no veg classes
+Grass,0.035,9.96,"sideoats grama and lovegrass on top of ridges, sideoats and black grama on slopes, scattered yucca"
+Grass w/ annual forbs,0.038,0.7,"black grama, sideoats grama, lovegrass grasses with ephedra, yucca on north facing slopes"
+"Grass, dense cover",0.04,0.16,"fairly dense perennial grasses (40% cover), cottontop, black grama on deep sandy loam"
+Sparse grass shrub,0.04,1.21,sparse grama grasses and lovegrass with mesquite and whitethorn on igneous slopes
+Sparse grass w/ scattered shrub,0.042,0.93,"sparse grama, lovegrass, tobosa grasses, scattered whitethorn, yucca on cobbly clay"
+Grass w/ scattered shrub,0.045,12.63,"Sideoats grama, tobosa, cane beardgrass w/ scattered whitethorn and yucca on basaltic hills"
+Sparse shrub and grass,0.048,7.85,"sparse shrubs, whitethorn, tarbush, some ocotillo with grama grasses on limestone outcrops"
+Grass w/ scattered shrub on sandy loam,0.048,5.38,"Bluestem, scattered juniper on gravelly sandy loam"
+Grass w/ scattered shrub on rocky soil,0.05,0.23,"sideoats and black grama, tobosa grasses, scattered white thorn, saltbush shrub on rocky soils"
+Shrub w/sparse grass,0.052,4.46,"creosote, tarbush, whitethorn shrubs w/sparse bush muhly, black grama on lucky hills soils"
+Shrub w/ sparse grass,0.052,21.39,"creosote, tarbush, whitethorn shrubs w/ sparse bush muhly, black grama grasses"
+Shrub grass,0.055,48.8,"Whitethorn, mesquite, sumac shrubs (20-30% cover) black grama, bush muhly other grassses"
+Shrub grass along drain,0.055,0.11,"Mesquite, some willow with grama grasses along drainage ways"
+Shrub grass sparse on rocky soil,0.058,5.67,"sparse whitethorn, creosote, tarbush shrubs w/ low density grama grasses on rocky surface"
+Shrub grass w/ annual forbs,0.058,0.18,"Mesquite, whitethorn, sumac shrubs, grama grasses with yucca, ephedra on north facing slopes"
+Shrub grass on rocky soils,0.06,8.38,"creosote, tarbush, whitethorn shrubs, medium density grama grasses very rocky surface"
+Tree grass shrub,0.065,1.39,juniper and oak savanna
+Shrub tree grass,0.068,0.4,"fairly dense mesquite, willow, some sumac shrub trees, grama and some sacaton on sandy loam"
+Tree shrub grass-- along drain,0.072,3.34,"mesquite, oak along drainage ways in higher elevations"
+Shrub tree grass along drainage,0.072,0.82,"mesquite, whitethorn, tarbush and yucca shrubs on rocky areas and along drains"
+Tree shrub along drainage way,0.075,1.69,mesquite trees and shrub along main Walnut gulch drain - very coarse sands and gravel
+Trees and shrub--along drain,0.078,0.14,juniper and oak along higher elev. stream course

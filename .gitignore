@@ -1,0 +1,21 @@
+# MATLAB
+*.asv
+*.mex*
+*.mlappinstall
+*.mlpkginstall
+
+# macOS
+.DS_Store
+._*
+
+# Python venv
+.venv/
+
+# IDE
+.vscode/
+*.swp
+*~
+
+# Temporary
+*.tmp
+*.bak
