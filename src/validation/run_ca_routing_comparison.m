@@ -48,11 +48,17 @@ addParameter(p, 'dt', 1.0, @isnumeric);
 addParameter(p, 'UseInfiltration', [], @islogical);
 addParameter(p, 'DisplayProgress', true, @islogical);
 addParameter(p, 'OutputInterval', 60, @isnumeric);
+addParameter(p, 'TrackCells', [], @isnumeric);  % [n_track x 2] (row, col) pairs to record per-step depth
 parse(p, sim_params, R_input, duration, varargin{:});
 
 dt_s = p.Results.dt;
 display_progress = p.Results.DisplayProgress;
 output_interval = p.Results.OutputInterval;
+track_cells = p.Results.TrackCells;
+if ~isempty(track_cells) && size(track_cells, 2) ~= 2
+    error('run_ca_routing_comparison: TrackCells must be [n_track x 2] (row, col).');
+end
+n_track = size(track_cells, 1);
 
 % Infiltration: default true if Ks is available
 use_infiltration = p.Results.UseInfiltration;
@@ -211,6 +217,11 @@ n_output = ceil(n_steps / output_interval) + 2;
 
 t_save = zeros(n_output, 1);
 Q_outlet_save = zeros(n_output, 1);
+if n_track > 0
+    h_track_save = zeros(n_track, n_output);  % depth [m] at tracked cells
+else
+    h_track_save = [];
+end
 save_idx = 1;
 t_save(1) = 0;
 Q_outlet_save(1) = 0;
@@ -373,10 +384,18 @@ for step = 1:n_steps
         if save_idx > n_output
             t_save = [t_save; zeros(200, 1)];
             Q_outlet_save = [Q_outlet_save; zeros(200, 1)];
+            if n_track > 0
+                h_track_save = [h_track_save, zeros(n_track, 200)];
+            end
             n_output = n_output + 200;
         end
         t_save(save_idx) = t_new;
         Q_outlet_save(save_idx) = Q_out_m3s;
+        if n_track > 0
+            for kk = 1:n_track
+                h_track_save(kk, save_idx) = d_tot(track_cells(kk,1), track_cells(kk,2)) / 1000;
+            end
+        end
     end
     
     %% Progress updates
@@ -391,6 +410,9 @@ comp_time = toc;
 %% Trim output arrays
 t_save = t_save(1:save_idx);
 Q_outlet_save = Q_outlet_save(1:save_idx);
+if n_track > 0
+    h_track_save = h_track_save(:, 1:save_idx);
+end
 
 %% Build results struct
 results.t = t_save;
@@ -398,6 +420,10 @@ results.Q_outlet = Q_outlet_save;
 results.h_final = d_tot / 1000;  % Convert mm -> m
 results.solver_name = 'CA_Routing';
 results.computation_time = comp_time;
+if n_track > 0
+    results.h_track = h_track_save;       % [n_track x n_save] depth [m] at TrackCells
+    results.track_cells = track_cells;    % [n_track x 2] (row, col)
+end
 
 if use_infiltration
     results.F_final = F_cum;

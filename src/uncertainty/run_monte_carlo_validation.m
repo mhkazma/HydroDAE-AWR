@@ -73,6 +73,7 @@ addParameter(p, 'SolverDt', [], @isnumeric);
 addParameter(p, 'OutputInterval', 60, @isnumeric);
 addParameter(p, 'RandomSeed', 42, @isnumeric);
 addParameter(p, 'LightweightSemi', false, @islogical);  % Skip 3D history in semi-implicit (saves RAM)
+addParameter(p, 'TrackCells', [], @isnumeric);  % [n_track x 2] (row, col) — record per-step depth at these cells (CA solver only)
 parse(p, sim_params, R_intensity, duration_s, pse_config, varargin{:});
 
 solver_name     = p.Results.Solver;
@@ -84,6 +85,16 @@ display_prog    = p.Results.DisplayProgress;
 output_interval = p.Results.OutputInterval;
 random_seed     = p.Results.RandomSeed;
 lightweight_semi = p.Results.LightweightSemi;
+track_cells      = p.Results.TrackCells;
+if ~isempty(track_cells) && size(track_cells, 2) ~= 2
+    error('run_monte_carlo_validation: TrackCells must be [n_track x 2] (row, col).');
+end
+n_track = size(track_cells, 1);
+if n_track > 0 && ~strcmp(p.Results.Solver, 'ca_routing')
+    warning('run_monte_carlo_validation: TrackCells currently supported only with Solver=''ca_routing''. Disabling tracking.');
+    track_cells = [];
+    n_track = 0;
+end
 
 % Set random seed for reproducibility
 if ~isempty(random_seed) && isnumeric(random_seed)
@@ -178,6 +189,7 @@ success_flags = false(N, 1);
 % Will be refined after first successful run
 t_common = [];
 Q_outlet_all = [];
+h_track_all = [];  % [N x n_track x nt_common] depth [m] at tracked cells (filled after t_common is known)
 
 % Convergence checkpoints
 check_fracs = [0.10, 0.25, 0.50, 0.75, 1.00];
@@ -213,10 +225,16 @@ if has_parallel
             if strcmp(solver_name, 'ca_routing')
                 res_m = run_ca_routing_comparison(sp_m, R_m, duration_s, ...
                     'dt', solver_dt, 'UseInfiltration', true, ...
-                    'OutputInterval', output_interval, 'DisplayProgress', false);
+                    'OutputInterval', output_interval, 'DisplayProgress', false, ...
+                    'TrackCells', track_cells);
+                h_track_m = [];
+                if isfield(res_m, 'h_track')
+                    h_track_m = res_m.h_track;
+                end
                 parfor_results{m} = struct('h_final', res_m.h_final, ...
                     'F_final', res_m.F_final, ...
                     'Q_outlet', res_m.Q_outlet, ...
+                    'h_track', h_track_m, ...
                     't', res_m.t, 'ok', true);
             else
                 [t_m, res_m] = run_semi_implicit_simulation(sp_m, R_m, duration_s, ...
@@ -246,11 +264,11 @@ if has_parallel
                     Q_out = res_m.Q_boundary_ts;  % fallback
                 end
                 parfor_results{m} = struct('h_final', h_f, 'F_final', F_f, ...
-                    'Q_outlet', Q_out, 't', t_m, 'ok', true);
+                    'Q_outlet', Q_out, 'h_track', [], 't', t_m, 'ok', true);
             end
         catch
             parfor_results{m} = struct('h_final', [], 'F_final', [], ...
-                'Q_outlet', [], 't', [], 'ok', false);
+                'Q_outlet', [], 'h_track', [], 't', [], 'ok', false);
         end
     end
 
@@ -263,6 +281,9 @@ if has_parallel
             if isempty(t_common) && ~isempty(parfor_results{m}.t)
                 t_common = parfor_results{m}.t(:);
                 Q_outlet_all = nan(N, numel(t_common));
+                if n_track > 0
+                    h_track_all = nan(N, n_track, numel(t_common));
+                end
             end
             if ~isempty(parfor_results{m}.Q_outlet) && ~isempty(t_common)
                 Q_m = parfor_results{m}.Q_outlet(:);
@@ -270,6 +291,19 @@ if has_parallel
                 if numel(Q_m) == numel(t_m)
                     Q_interp = interp1(t_m, Q_m, t_common, 'linear', 'extrap');
                     Q_outlet_all(m, :) = Q_interp;
+                end
+            end
+            if n_track > 0 && ~isempty(parfor_results{m}.h_track) && ~isempty(t_common)
+                hk_m = parfor_results{m}.h_track;  % [n_track x nt_m]
+                t_m  = parfor_results{m}.t(:);
+                if size(hk_m, 2) == numel(t_m)
+                    if isempty(h_track_all)
+                        h_track_all = nan(N, n_track, numel(t_common));
+                    end
+                    for kk = 1:n_track
+                        hk_interp = interp1(t_m, hk_m(kk, :)', t_common, 'linear', 'extrap');
+                        h_track_all(m, kk, :) = hk_interp;
+                    end
                 end
             end
         end
@@ -289,11 +323,17 @@ else
             if strcmp(solver_name, 'ca_routing')
                 res_m = run_ca_routing_comparison(sp_m, R_m, duration_s, ...
                     'dt', solver_dt, 'UseInfiltration', true, ...
-                    'OutputInterval', output_interval, 'DisplayProgress', false);
+                    'OutputInterval', output_interval, 'DisplayProgress', false, ...
+                    'TrackCells', track_cells);
                 h_f = res_m.h_final;
                 F_f = res_m.F_final;
                 Q_out = res_m.Q_outlet;
                 t_m = res_m.t;
+                if isfield(res_m, 'h_track')
+                    h_track_m = res_m.h_track;
+                else
+                    h_track_m = [];
+                end
             else
                 [t_m, res_m] = run_semi_implicit_simulation(sp_m, R_m, duration_s, ...
                     'dt', solver_dt, 'DisplayProgress', false, ...
@@ -319,6 +359,7 @@ else
                 elseif isfield(res_m, 'Q_boundary_ts')
                     Q_out = res_m.Q_boundary_ts;  % fallback
                 end
+                h_track_m = [];
             end
 
             success_flags(m) = true;
@@ -329,12 +370,26 @@ else
             if isempty(t_common) && ~isempty(t_m)
                 t_common = t_m(:);
                 Q_outlet_all = nan(N, numel(t_common));
+                if n_track > 0
+                    h_track_all = nan(N, n_track, numel(t_common));
+                end
             end
             if ~isempty(Q_out) && ~isempty(t_common)
                 Q_m = Q_out(:);
                 if numel(Q_m) == numel(t_m(:))
                     Q_interp = interp1(t_m(:), Q_m, t_common, 'linear', 'extrap');
                     Q_outlet_all(m, :) = Q_interp;
+                end
+            end
+            if n_track > 0 && ~isempty(h_track_m) && ~isempty(t_common)
+                if size(h_track_m, 2) == numel(t_m(:))
+                    if isempty(h_track_all)
+                        h_track_all = nan(N, n_track, numel(t_common));
+                    end
+                    for kk = 1:n_track
+                        hk_interp = interp1(t_m(:), h_track_m(kk, :)', t_common, 'linear', 'extrap');
+                        h_track_all(m, kk, :) = hk_interp;
+                    end
                 end
             end
 
@@ -413,6 +468,19 @@ mc_results.random_seed    = random_seed;
 mc_results.sampling_method = sampling_method;
 mc_results.computation_time = toc(tic_total);
 mc_results.convergence    = convergence;
+
+% Per-cell tracked depth ensemble statistics
+if n_track > 0 && ~isempty(h_track_all)
+    hk_ok = h_track_all(success_flags, :, :);  % [n_ok x n_track x nt]
+    mc_results.track_cells       = track_cells;
+    mc_results.h_track_mean      = squeeze(mean(hk_ok, 1, 'omitnan'));   % [n_track x nt]
+    mc_results.h_track_std       = squeeze(std(hk_ok, 0, 1, 'omitnan')); % [n_track x nt]
+    mc_results.h_track_p025      = squeeze(prctile(hk_ok, 2.5, 1));      % [n_track x nt]
+    mc_results.h_track_p975      = squeeze(prctile(hk_ok, 97.5, 1));     % [n_track x nt]
+    if save_traj
+        mc_results.h_track_ensemble = hk_ok;   % [n_ok x n_track x nt]
+    end
+end
 
 fprintf('  MC validation complete: %.1f s, %d/%d successful\n', ...
     mc_results.computation_time, n_ok, N);
