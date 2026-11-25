@@ -1,5 +1,7 @@
 # HydroDAE-AWR
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24545573.svg)](https://doi.org/10.5281/zenodo.24545573)
+
 **Companion code and data for:**
 
 > **Exploring Uncertainty Propagation in Coupled Hydrologic and Hydrodynamic Systems via Distribution-Agnostic State Space Analysis**
@@ -184,6 +186,19 @@ Each `*_pse_measured_ALL.mat` contains:
   year    = {2026},
   doi     = {10.1016/j.advwatres.2026.105389},
   note    = {Submitted 5 March 2026; accepted 15 June 2026; published 23 June 2026. arXiv:2603.05740}
+}
+```
+
+To cite the code itself (version 1.0, archived on Zenodo):
+
+```bibtex
+@misc{kazma2026hydrodaeawr,
+  author       = {Kazma, Mohamad H. and Taha, Ahmad F.},
+  title        = {{HydroDAE-AWR}: Uncertainty propagation in coupled hydrologic and hydrodynamic
+                  systems via distribution-agnostic state space analysis (Version 1.0)},
+  howpublished = {Zenodo},
+  year         = {2026},
+  doi          = {10.5281/zenodo.24545573}
 }
 ```
 
