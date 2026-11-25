@@ -4,13 +4,15 @@
 
 > **Exploring Uncertainty Propagation in Coupled Hydrologic and Hydrodynamic Systems via Distribution-Agnostic State Space Analysis**
 >
-> M. H. Kazma
+> M. H. Kazma and A. F. Taha
 >
-> Submitted to *Advances in Water Resources*, 2026
+> *Advances in Water Resources*, 215, 105389 (2026). Submitted 5 March 2026; accepted 15 June 2026; published 23 June 2026. https://doi.org/10.1016/j.advwatres.2026.105389 (arXiv: https://arxiv.org/abs/2603.05740)
 
 ---
 
 ## Overview
+
+Flood forecasts depend on uncertain rainfall, soil properties, and initial conditions. The paper writes two-dimensional overland flow routing and Green-Ampt infiltration as a coupled differential algebraic equation (DAE) state space model, in which the water depth and cumulative infiltration of each cell are differential states and the discharges between cells are algebraic variables given by Manning's equation. On this model, it propagates the uncertainty of rainfall and soil parameters and estimates the watershed states from partial measurements. The approach is distribution-agnostic, since it needs only the covariances of the uncertainties and not their distributions, and it gives confidence intervals for water depths and discharges at measured and unmeasured locations. The code reproduces the experiments of the paper on the synthetic V-tilted catchment and on the Walnut Gulch Experimental Watershed in Arizona, including the comparison with Monte Carlo ensembles of cellular automata and local inertial solvers.
 
 This repository contains the MATLAB simulation code and pre-computed results for reproducing the numerical experiments in the paper.
 
@@ -172,13 +174,16 @@ Each `*_pse_measured_ALL.mat` contains:
 ## Citation
 
 ```bibtex
-@article{kazma2026hydrodae,
-  title   = {Evaluating Hydrologic-Hydrodynamic Response to Uncertainty:
-             A Differential-Algebraic Systems Approach},
-  author  = {Kazma, M. H.},
+@article{kazma2026uncertainty,
+  title   = {Exploring uncertainty propagation in coupled hydrologic and hydrodynamic systems
+             via distribution-agnostic state space analysis},
+  author  = {Kazma, Mohamad H. and Taha, Ahmad F.},
   journal = {Advances in Water Resources},
+  volume  = {215},
+  pages   = {105389},
   year    = {2026},
-  note    = {Under review}
+  doi     = {10.1016/j.advwatres.2026.105389},
+  note    = {Submitted 5 March 2026; accepted 15 June 2026; published 23 June 2026. arXiv:2603.05740}
 }
 ```
 
